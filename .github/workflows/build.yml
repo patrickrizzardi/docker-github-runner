@@ -33,13 +33,14 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build and Push Image to ghcr.io
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}:production
+          tags: |
+            ghcr.io/${{ github.repository }}:production
+            ghcr.io/${{ github.repository }}:latest
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:production
           cache-to: type=inline # Inline cache is stored in the registry, embedded into the main image, and is pulled alongside the main image.
-          target: final # This is the target stage in the Dockerfile
           labels: |
             org.opencontainers.image.title=Production Image
             org.opencontainers.image.description=Image used for production
@@ -47,7 +48,7 @@ jobs:
 
   clean-old-images:
     name: Clean Old Images
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: [build-final-image]
 
     permissions:

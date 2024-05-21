@@ -45,7 +45,7 @@ docker run \
 ```yaml
 services:
   app:
-    image: ghcr.io/vpm-solutions/docker-github-runner:latest
+    image: ghcr.io/redact-digital/docker-github-runner:latest
     environment:
       ORGANIZATION_NAME: 'your-organization-name'
       GITHUB_ACCESS: 'ghp_***'
@@ -61,5 +61,5 @@ docker compose up -d
 docker run \
     -e ORGANIZATION_NAME='your-organization-name' \
     -e GITHUB_ACCESS_TOKEN='gh_***' \
-    ghcr.io/vpm-solutions/docker-github-runner:latest
+    ghcr.io/redact-digital/docker-github-runner:latest
 ```
