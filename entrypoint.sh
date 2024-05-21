@@ -3,7 +3,6 @@
 blue_text='\033[0;36m'
 red_text='\033[0;31m'
 color_reset='\033[0m'
-environment=""
 
 set -e
 
