@@ -38,6 +38,10 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
     docker-ce-cli \
     containerd.io
 
+# Change the docker group id to match the host
+ENV DOCKER_GID=999
+RUN groupmod -g ${DOCKER_GID} docker
+
 # Add the github user to the docker group
 RUN usermod -aG docker github
 
