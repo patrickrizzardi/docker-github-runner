@@ -78,7 +78,7 @@ services:
       ORGANIZATION_NAME: 'your-organization-name'
       GITHUB_ACCESS: 'ghp_***'
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 ```
 
 ```bash
@@ -91,6 +91,6 @@ docker compose up -d
 docker run \
     -e ORGANIZATION_NAME='your-organization-name' \
     -e GITHUB_ACCESS_TOKEN='gh_***' \
-    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /var/run/docker.sock:/var/run/docker.sock:ro \
     ghcr.io/redact-digital/docker-github-runner:latest
 ```
