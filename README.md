@@ -10,7 +10,6 @@ You can either build the image yourself or use the pre-built image from ghcr.io.
 
 - `ORGANIZATION_NAME`: The name of the organization that the runner should be registered to.This is the same as the organization name in the URL of the organization's Github page.
 - `GITHUB_ACCESS`: The access token that the runner should use to authenticate with Github. This token should have the `repo` scope.
-- `DOCKER_GID`: (Optional) The GID of the `docker` group on the host machine. This is only necessary if you are using the `docker/build-push-action` action to build and push Docker images.
 
 ### Building and Running the container yourself using Docker Compose
 
@@ -67,7 +66,7 @@ docker run \
 
 ## Using Docker (docker/build-push-action)
 
-If you are using the `docker/build-push-action` action to build and push your Docker image, you will need to add the volume `/var/run/docker.sock:/var/run/docker.sock` to the container. It is also possible that you need to add the `DOCKER_GID` environment variable to the container. This variable should be set to the GID of the `docker` group on the host machine. You can find the GID by running `getent group docker`.
+If you are using the `docker/build-push-action` action to build and push your Docker image, you will need to add the volume `/var/run/docker.sock:/var/run/docker.sock` to the container. It is also possible that you need change the permissions of the docker socket on the host machine. If that is the case you can use `sudo chmod 666 /var/run/docker.sock`.
 
 ### Running the pre-built image using Docker Compose
 
