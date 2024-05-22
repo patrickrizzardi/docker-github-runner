@@ -14,6 +14,9 @@ ENV WORKDIR /github-runner
 # Create the github user
 RUN useradd -m github
 
+# Create the docker group with the same GID as the host
+RUN groupadd -g 999 docker
+
 # Install Updates
 RUN apt-get update \
     && apt-get upgrade -y --no-install-recommends
