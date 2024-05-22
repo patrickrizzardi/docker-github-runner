@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 # Exit on error
-RUN set -ex;
+RUN set -e
 
 ARG RUNNER_VERSION=2.316.1
 
@@ -11,25 +11,42 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Add environment variables that can be used in the entrypoint script
 ENV WORKDIR /github-runner
 
-# Install dependencies
-RUN apt-get update; \
-    apt-get upgrade -y --no-install-recommends; \
-    apt-get install -y --no-install-recommends \
+# Create the github user
+RUN useradd -m github
+
+# Install Updates
+RUN apt-get update \
+    && apt-get upgrade -y --no-install-recommends
+
+# Install Dependencies
+RUN apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     jq \
-    libicu70;
+    libicu70 \
+    apt-transport-https \
+    software-properties-common \
+    gnupg \
+    lsb-release
 
+# Install Docker
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io
+
+# Add the github user to the docker group
+RUN usermod -aG docker github
 
 # Install Cleanup
-RUN apt-get -y autoremove; \
-    apt-get -y clean; \
-    rm -rf /var/lib/apt/lists/*; \
-    rm -rf /tmp/*; \
-    rm -rf /var/tmp/*
-
-# Create the github user
-RUN useradd -m github
+RUN apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
 
 # Create the runner directory
 RUN mkdir /github-runner
