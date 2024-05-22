@@ -6,7 +6,7 @@ RUN set -e
 ARG RUNNER_VERSION=2.316.1
 
 # Prevent prompts for user input
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 # Add environment variables that can be used in the entrypoint script
 ENV WORKDIR /github-runner
@@ -37,10 +37,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
     docker-ce \
     docker-ce-cli \
     containerd.io
-
-# Change the docker group id to match the host
-ENV DOCKER_GID=999
-RUN groupmod -g ${DOCKER_GID} docker
 
 # Add the github user to the docker group
 RUN usermod -aG docker github
