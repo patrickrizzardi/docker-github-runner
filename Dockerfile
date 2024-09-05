@@ -44,6 +44,9 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
 # Add the github user to the docker group
 RUN usermod -aG docker github
 
+# Ensure /var/run/docker.sock is accessible
+RUN chown root:docker /var/run/docker.sock
+
 # Install Cleanup
 RUN apt-get -y autoremove \
     && apt-get -y clean \
