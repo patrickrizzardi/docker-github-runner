@@ -66,7 +66,7 @@ docker run \
 
 ## Using Docker (docker/build-push-action)
 
-If you are using the `docker/build-push-action` action to build and push your Docker image, you will need to add the volume `/var/run/docker.sock:/var/run/docker.sock` to the container. It is recommended to mount the Docker socket as read-only. If you get permission errors, you will need to run all docker commands using `sudo`. This is because the Docker image is running as a non-root user where the Docker group has the ID of 999 and your host machine has a different ID for the Docker group.
+If you are using the `docker/build-push-action` action to build and push your Docker image, you will need to add the volume `/var/run/docker.sock:/var/run/docker.sock` to the container.
 
 ### Running the pre-built image using Docker Compose
 
