@@ -11,12 +11,6 @@ ENV DEBIAN_FRONTEND noninteractive
 # Add environment variables that can be used in the entrypoint script
 ENV WORKDIR /github-runner
 
-# Create the github user
-RUN useradd -m github
-
-# Create the docker group with the same GID as the host
-RUN groupadd -g 999 docker
-
 # Install Updates
 RUN apt-get update \
     && apt-get upgrade -y --no-install-recommends
@@ -30,7 +24,18 @@ RUN apt-get install -y --no-install-recommends \
     apt-transport-https \
     software-properties-common \
     gnupg \
-    lsb-release
+    lsb-release \
+    sudo
+
+# Create the github user and add it to the sudo group
+RUN useradd -m github \
+    && usermod -aG sudo github
+
+# Allow the github user to run sudo commands without a password
+RUN echo "github ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Create the docker group with the same GID as the host
+RUN groupadd -g 999 docker
 
 # Install Docker
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
@@ -43,9 +48,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
 
 # Add the github user to the docker group
 RUN usermod -aG docker github
-
-# Ensure /var/run/docker.sock is accessible
-RUN chmod 666 /var/run/docker.sock
 
 # Install Cleanup
 RUN apt-get -y autoremove \
