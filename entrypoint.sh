@@ -6,6 +6,19 @@ color_reset='\033[0m'
 
 set -e
 
+# Ensure docker.sock is mounted
+if [ ! -S /var/run/docker.sock ]; then
+    echo -e "${red_text}Docker socket not mounted. Exiting...${color_reset}"
+    exit 1
+fi
+
+# Ensure docker.sock can be used by the current user
+if [ ! -w /var/run/docker.sock ]; then
+    echo -e "${blue_text}Docker socket is not writable. Changing permissions...${color_reset}"
+    sudo chmod 666 /var/run/docker.sock
+    exit 1
+fi
+
 # Ensure organization name is set and not empty
 if [ -z "$ORGANIZATION_NAME" ]; then
     echo -e "${red_text}Organization name is not set. Exiting...${color_reset}"
@@ -16,6 +29,12 @@ fi
 if [ -z "$GITHUB_ACCESS_TOKEN" ]; then
     echo -e "${red_text}GitHub access token is not set. Exiting...${color_reset}"
     exit 1
+fi
+
+if [ "$#" -ne 0 ]; then
+    echo -e "${blue_text}Running custom commands...${color_reset}"
+    $@
+    exit 0
 fi
 
 RUNNER_TOKEN=$(
