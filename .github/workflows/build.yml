@@ -39,8 +39,8 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:production
             ghcr.io/${{ github.repository }}:latest
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:production
-          cache-to: type=inline # Inline cache is stored in the registry, embedded into the main image, and is pulled alongside the main image.
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:production-cache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:production-cache
           labels: |
             org.opencontainers.image.title=Production Image
             org.opencontainers.image.description=Image used for production

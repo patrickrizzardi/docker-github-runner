@@ -26,6 +26,7 @@ RUN apt-get install -y --no-install-recommends \
     gnupg \
     lsb-release \
     gh \
+    git \
     sudo
 
 # Create the github user and add it to the sudo group
