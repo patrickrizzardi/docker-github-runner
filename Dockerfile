@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 # Exit on error
 RUN set -e
 
-ARG RUNNER_VERSION=2.316.1
+ARG RUNNER_VERSION=2.321.0
 
 # Prevent prompts for user input
 ENV DEBIAN_FRONTEND noninteractive
